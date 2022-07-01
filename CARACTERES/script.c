@@ -7,7 +7,6 @@ utilizar la memoria justa y necesaria
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 int lenghtStr(char *str)
 {
@@ -19,59 +18,94 @@ int lenghtStr(char *str)
         return i;
 }
 
-void *pushWord(char *str, char word)
+void concatStr(char *str1, char *str2, char *var)
 {
-        int lenght = lenghtStr(str);
-        str = (char *)realloc(str, lenght + 2);
-        str[lenght] = word;
-        str[lenght + 1] = '\0';
+
+        int lenght1 = lenghtStr(str1);
+        int lenght2 = lenghtStr(str2);
+
+        // concat
+        for (size_t i = 0; i < lenght1 + lenght2; i++)
+        {
+                if (i < lenght1)
+                {
+                        var[i] = str1[i];
+                }
+                else
+                {
+                        var[i] = str2[i - lenght1];
+                }
+        }
+        var[lenght1 + lenght2] = '\0';
 }
 
-char *invertString(char *str)
+void concatStrEsp(char *str1, char *str2, char *var)
 {
-        int lenght = lenghtStr(str);
-        char *strInv = (char *)malloc(lenght + 1);
-        for (size_t i = lenght; 0 < i; i--)
+
+        int lenght1 = lenghtStr(str1);
+        int lenght2 = lenghtStr(str2);
+
+        // Concat Espaciado
+        for (size_t i = 0; i < lenght1 + lenght2 + 1; i++)
         {
-                strInv[lenght - i] = str[i - 1];
+                if (i < lenght1)
+                {
+                        var[i] = str1[i];
+                }
+                else if (i == lenght1)
+                {
+                        var[i] = ' ';
+                }
+                else
+                {
+                        var[i] = str2[i - lenght1 - 1];
+                }
         }
-        strInv[lenght] = '\0';
-        return strInv;
+        var[lenght1 + lenght2 + 1] = '\0';
+}
+
+void strInvStr(char *str, char *var)
+{
+
+        int lenght = lenghtStr(str);
+
+        // concat invert
+        for (int i = lenght; i > 0; i--)
+        {
+                var[lenght - i] = str[i - 1];
+                printf("%c\n", var[lenght - i]);
+        }
+        var[lenght] = '\0';
 }
 
 int main()
 {
-        char *str;
-        bool run = true;
-        bool first = true;
-        while (run)
-        {
-                char temp;
-                printf("Inserte Caracter: ");
-                scanf("%s", &temp);
-                if (temp == '0')
-                {
-                        run = false;
-                        break;
-                }
-                if (first)
-                {
-                        str = (char *)malloc(2);
-                        str[0] = temp;
-                        str[1] = '\0';
-                        first = false;
-                }
-                else
-                {
-                        pushWord(str, temp);
-                }
-        }
+        char str1[150];
+        char str2[150];
 
-        char *strInv = invertString(str);
+        puts("Introdusca Primer String: ");
+        gets(str1);
 
-        printf("Caracteres Concatenados: %s\n", str);
-        printf("Caracteres Alreves: %s\n", strInv);
-        free(str);
-        free(strInv);
+        puts("Introdusca Segundo String: ");
+        gets(str2);
+
+        int lenght1 = lenghtStr(str1);
+        int lenght2 = lenghtStr(str2);
+
+        char concat[lenght1 + lenght2 + 1];
+        char concatInv[lenght1 + lenght2 + 1];
+
+        char concatEsp[lenght1 + lenght2 + 2];
+        char concatInvEsp[lenght1 + lenght2 + 2];
+
+        concatStr(str1, str2, concat);
+        strInvStr(concat, concatInv);
+        concatStrEsp(str1, str2, concatEsp);
+        strInvStr(concatEsp, concatInvEsp);
+
+        printf("Strings Concatenados: %s\n", concat);
+        printf("Strings Concatenados con Espacio Entre Palabra: %s\n", concatEsp);
+        printf("Strings Concatenado Alreves: %s\n", concatInv);
+        printf("Strings Concatenado Alreves con Espacio Entre Palabras: %s\n", concatInvEsp);
         return 0;
 }

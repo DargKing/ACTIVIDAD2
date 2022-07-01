@@ -24,7 +24,7 @@ float main()
         float array[n]; // Se reserva el espacio en memoria del array
 
         for (int i = 0; i < n; i++){ // se seguira iterando hasta que i sea igual a n
-                printf("Introdusca valor N%d ", i); // Se le indica al usuario que introdusca un valor
+                printf("\nIntrodusca valor N%d ", i); // Se le indica al usuario que introdusca un valor
                 scanf("%f", &array[i]); // almacena en memoria el valor
         }
 
